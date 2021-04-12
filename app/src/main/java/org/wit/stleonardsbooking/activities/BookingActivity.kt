@@ -19,15 +19,20 @@ class BookingActivity : AppCompatActivity(), AnkoLogger {
         app = application as MainApp
 
 
-        btnAdd.setOnClickListener(){
+        btnAdd.setOnClickListener() {
             booking.title = bookingTitle.text.toString()
             booking.date = bookDate.text.toString()
             booking.startTime = bookTimeStart.text.toString()
             booking.endTime = bookTimeEnd.text.toString()
-            if (booking.title.isNotEmpty() && booking.date.isNotEmpty() && booking.startTime.isNotEmpty() && booking.endTime.isNotEmpty()&&booking.facility.isNotEmpty()){
+            if (booking.title.isNotEmpty() && booking.date.isNotEmpty() && booking.startTime.isNotEmpty() && booking.endTime.isNotEmpty()) {
                 app.bookings.add(booking.copy())
-              app.bookings.forEach { info("Add button pressed: ${it.title}, ${it.date},${it.startTime},${it.endTime},${it.facility}")}
+                app.bookings.forEach { info("Add button pressed: ${it.title}, ${it.date},${it.startTime},${it.endTime},${it.facility}") }
+            for (i in app.bookings.indices){
+                info("Booking[$i]:${app.bookings[i]}")
             }
+            setResult(AppCompatActivity.RESULT_OK)
+            finish()
+        }
             else{
                 toast("Please fill out all fields")
             }

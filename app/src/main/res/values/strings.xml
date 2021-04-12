@@ -1,8 +1,9 @@
 <resources>
     <string name="app_name">St Leonards FC Booking App</string>
     <string name="button_addBooking">Add Booking</string>
-    <string name="hint_bookTitle">Booking Title</string>
+    <string name="hint_bookTitle">Age Group/Team Name</string>
     <string name="hint_bookTimeStart">Time of Session Start</string>
     <string name="hint_bookDate">Date of Session</string>
     <string name="hint_bookTimeEnd">End of Session</string>
+    <string name="menu_addBooking">Add</string>
 </resources>

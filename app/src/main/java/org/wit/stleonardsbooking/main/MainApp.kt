@@ -9,6 +9,5 @@ class MainApp : Application(),AnkoLogger {
     override fun onCreate() {
         super.onCreate()
         info("St.Leonards Booking App Started")
-        bookings.add(BookingModel("Test","10/04/2021","22:00","23:00",""))
     }
 }

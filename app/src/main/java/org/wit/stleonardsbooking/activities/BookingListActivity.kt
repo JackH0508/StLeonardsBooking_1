@@ -1,13 +1,12 @@
 package org.wit.stleonardsbooking.activities
 import android.os.Bundle
-import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewGroup
+import android.view.*
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import kotlinx.android.synthetic.main.card_booking.view.*
 import kotlinx.android.synthetic.main.activity_booking_list.*
+import org.jetbrains.anko.startActivityForResult
 import org.wit.stleonardsbooking.R
 import org.wit.stleonardsbooking.main.MainApp
 import org.wit.stleonardsbooking.models.BookingModel
@@ -20,10 +19,26 @@ class BookingListActivity : AppCompatActivity(){
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_booking_list)
         app = application as MainApp
+
         val layoutManager = LinearLayoutManager(this)
         recyclerView.layoutManager = layoutManager
         recyclerView.adapter = BookingAdapter(app.bookings)
+
+
     }
+
+    override fun onCreateOptionsMenu(menu: Menu?): Boolean {
+        menuInflater.inflate(R.menu.menu_main, menu)
+        return super.onCreateOptionsMenu(menu)
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+       when (item.itemId){
+           R.id.item_add -> startActivityForResult<BookingActivity>(0)
+       }
+        return super.onOptionsItemSelected(item)
+    }
+
 }
 class BookingAdapter constructor(private var bookings: List<BookingModel>) :
         RecyclerView.Adapter<BookingAdapter.MainHolder>(){
