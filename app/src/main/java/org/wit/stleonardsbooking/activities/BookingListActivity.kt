@@ -1,4 +1,5 @@
 package org.wit.stleonardsbooking.activities
+import android.content.Intent
 import android.os.Bundle
 import android.view.*
 import androidx.appcompat.app.AppCompatActivity
@@ -6,12 +7,15 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import kotlinx.android.synthetic.main.card_booking.view.*
 import kotlinx.android.synthetic.main.activity_booking_list.*
+import org.jetbrains.anko.intentFor
 import org.jetbrains.anko.startActivityForResult
 import org.wit.stleonardsbooking.R
+import org.wit.stleonardsbooking.adapters.BookingAdapter
+import org.wit.stleonardsbooking.adapters.BookingListener
 import org.wit.stleonardsbooking.main.MainApp
 import org.wit.stleonardsbooking.models.BookingModel
 
-class BookingListActivity : AppCompatActivity(){
+class BookingListActivity : AppCompatActivity(), BookingListener{
 
     lateinit var app: MainApp
 
@@ -22,7 +26,7 @@ class BookingListActivity : AppCompatActivity(){
 
         val layoutManager = LinearLayoutManager(this)
         recyclerView.layoutManager = layoutManager
-        recyclerView.adapter = BookingAdapter(app.bookings)
+        recyclerView.adapter = BookingAdapter(app.bookings.findAll(), this)
 
 
     }
@@ -39,28 +43,12 @@ class BookingListActivity : AppCompatActivity(){
         return super.onOptionsItemSelected(item)
     }
 
-}
-class BookingAdapter constructor(private var bookings: List<BookingModel>) :
-        RecyclerView.Adapter<BookingAdapter.MainHolder>(){
-
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): BookingAdapter.MainHolder {
-        return MainHolder(
-                LayoutInflater.from(parent.context).inflate(R.layout.card_booking,parent,false))
-
+    override fun onBookingClick(booking: BookingModel) {
+        startActivityForResult(intentFor<BookingActivity>().putExtra("booking_edit",booking),0)
     }
 
-    override fun onBindViewHolder(holder: MainHolder, position: Int) {
-        val booking = bookings[holder.adapterPosition ]
-        holder.bind(booking)
-    }
-
-    override fun getItemCount(): Int = bookings.size
-    class MainHolder constructor(itemView: View) :RecyclerView.ViewHolder(itemView){
-        fun bind(booking: BookingModel){
-            itemView.bookingTitle.text = booking.title
-            itemView.bookDate.text = booking.date
-            itemView.bookTimeStart.text = booking.startTime
-            itemView.bookTimeEnd.text = booking.endTime
-        }
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        recyclerView.adapter?.notifyDataSetChanged()
+        super.onActivityResult(requestCode, resultCode, data)
     }
 }

@@ -2,6 +2,8 @@ package org.wit.stleonardsbooking.activities
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.view.Menu
+import android.view.MenuItem
 import kotlinx.android.synthetic.main.activity_booking.*
 import org.jetbrains.anko.AnkoLogger
 import org.jetbrains.anko.info
@@ -14,29 +16,55 @@ class BookingActivity : AppCompatActivity(), AnkoLogger {
     var booking = BookingModel()
     lateinit var app : MainApp
     override fun onCreate(savedInstanceState: Bundle?) {
+        var edit = false
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_booking)
         app = application as MainApp
 
-
+        if (intent.hasExtra("booking_edit")){
+            edit = true
+            booking = intent.extras?.getParcelable<BookingModel>("booking_edit")!!
+            bookingTitle.setText(booking.title)
+            bookDate.setText(booking.date)
+            bookTimeStart.setText(booking.startTime)
+            bookTimeEnd.setText(booking.endTime)
+            btnAdd.setText(R.string.save_booking)
+        }
         btnAdd.setOnClickListener() {
             booking.title = bookingTitle.text.toString()
             booking.date = bookDate.text.toString()
             booking.startTime = bookTimeStart.text.toString()
             booking.endTime = bookTimeEnd.text.toString()
-            if (booking.title.isNotEmpty() && booking.date.isNotEmpty() && booking.startTime.isNotEmpty() && booking.endTime.isNotEmpty()) {
-                app.bookings.add(booking.copy())
-                app.bookings.forEach { info("Add button pressed: ${it.title}, ${it.date},${it.startTime},${it.endTime},${it.facility}") }
-            for (i in app.bookings.indices){
-                info("Booking[$i]:${app.bookings[i]}")
+            if (booking.title.isEmpty() && booking.date.isEmpty() && booking.startTime.isEmpty() && booking.endTime.isEmpty()) {
+                toast(R.string.fill_fields)
+        }
+            else {
+
+
+                if (edit) {
+                    app.bookings.update(booking.copy())
+                } else {
+                    app.bookings.create(booking.copy())
+                }
             }
-            setResult(AppCompatActivity.RESULT_OK)
+            info("Add button pressed: ${booking}")
+            setResult(RESULT_OK)
             finish()
         }
-            else{
-                toast("Please fill out all fields")
-            }
-        }
-        
+
+    }
+
+    override fun onCreateOptionsMenu(menu: Menu?): Boolean {
+        menuInflater.inflate(R.menu.menu_booking, menu)
+        return super.onCreateOptionsMenu(menu)
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+       when (item.itemId){
+           R.id.item_cancel ->{
+               finish()
+           }
+       }
+        return super.onOptionsItemSelected(item)
     }
 }

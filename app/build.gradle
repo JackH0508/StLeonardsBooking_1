@@ -32,6 +32,9 @@ android {
         jvmTarget = '1.8'
     }
 }
+androidExtensions {
+    experimental = true
+}
 
 dependencies {
 // https://mvnrepository.com/artifact/org.jetbrains.anko/anko-commons

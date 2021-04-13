@@ -6,4 +6,7 @@
     <string name="hint_bookDate">Date of Session</string>
     <string name="hint_bookTimeEnd">End of Session</string>
     <string name="menu_addBooking">Add</string>
+    <string name="menu_cancelBooking">Cancel</string>
+    <string name="fill_fields">Please fill out all fields</string>
+    <string name="save_booking">Save Booking</string>
 </resources>
